@@ -24,12 +24,15 @@ public class ProductController {
 
     private final ProductService productService;
 
+    @Value("${server.port}")
+    private String port;
     @PostMapping
     public ResponseEntity<ProductAddResponse>
     addProduct(@RequestBody @Valid ProductAddRequest request) {
         ProductAddResponse response =
             productService.addProduct(request);
         return ResponseEntity.ok()
+            .header("Server-Port", port)
             .body(response);
     }
 
@@ -39,6 +42,7 @@ public class ProductController {
         List<ProductGetResponse> productList =
             productService.getProductList(request, pageable);
         return ResponseEntity.ok()
+            .header("Server-Port", port)
             .body(productList);
     }
 
